@@ -60,9 +60,12 @@ function fillSide(rows, levels, reversed, maxQty, prev) {
     const r = rows[reversed ? DEPTH - 1 - i : i];
     const lv = levels[i];
     if (!lv) {
-      r.row.className = 'row empty';
-      r.bar.style.width = '0';
-      r.key = null;
+      if (r.key !== null) {
+        r.row.className = 'row empty';
+        r.bar.style.width = '0';
+        r.price.textContent = r.size.textContent = r.orders.textContent = '';
+        r.key = null;
+      }
       continue;
     }
     const [price, qty, count] = lv;
@@ -193,6 +196,7 @@ function drawChart() {
   let lo = Infinity;
   let hi = -Infinity;
   for (const p of pts) {
+    if (!p[1]) continue;  // no price yet
     if (p[1] < lo) lo = p[1];
     if (p[1] > hi) hi = p[1];
   }

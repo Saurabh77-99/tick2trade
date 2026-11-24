@@ -34,9 +34,10 @@ endif()
 add_library(hft INTERFACE)
 target_include_directories(hft INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Command-line tool: itch stats | replay | snapshot | gen
+# Command-line tool: itch gen | sim | stats | replay | snapshot
 add_executable(itch
   src/tools/main.cpp
+  src/tools/cmd_sim.cpp
   src/tools/cmd_stats.cpp
   src/tools/cmd_replay.cpp
   src/tools/cmd_snapshot.cpp
@@ -46,6 +47,8 @@ target_link_libraries(itch PRIVATE hft)
 # Benchmarks
 add_executable(bench_book bench/bench_book.cpp)
 target_link_libraries(bench_book PRIVATE hft)
+add_executable(bench_engine bench/bench_engine.cpp)
+target_link_libraries(bench_engine PRIVATE hft)
 
 if(HFT_TESTS)
   # Use a system GoogleTest if present (Ubuntu: sudo apt install libgtest-dev),
@@ -66,7 +69,8 @@ if(HFT_TESTS)
     tests/test_common.cpp
     tests/test_parser.cpp
     tests/test_book.cpp
-    tests/test_differential.cpp)
+    tests/test_differential.cpp
+    tests/test_engine.cpp)
   target_link_libraries(unit_tests PRIVATE hft GTest::gtest_main)
   include(GoogleTest)
   gtest_discover_tests(unit_tests)

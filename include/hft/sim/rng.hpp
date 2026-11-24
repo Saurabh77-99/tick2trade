@@ -43,6 +43,13 @@ public:
     // Exponential with the given mean.
     double exponential(double mean) noexcept { return -mean * std::log(1.0 - unit()); }
 
+    // Standard normal (Box-Muller). Uses two uniforms, returns one sample.
+    double normal() noexcept {
+        const double u1 = 1.0 - unit();  // (0, 1]
+        const double u2 = unit();
+        return std::sqrt(-2.0 * std::log(u1)) * std::cos(6.283185307179586 * u2);
+    }
+
 private:
     std::uint64_t s_;
 };

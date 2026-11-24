@@ -1,6 +1,8 @@
 // itch: command-line tool for ITCH 5.0 files.
 //
 //   itch gen      <out.itch> [--symbols N] [--messages N] [--seed N]
+//   itch sim      <out.itch> [--symbols 4] [--mm 3] [--noise 30] [--informed 2]
+//                            [--hours 6.5] [--seed 7]
 //   itch stats    <file.itch>
 //   itch replay   <file.itch> [--book vector|map] [--symbol AAPL] [--depth N]
 //                             [--latency] [--warm] [--check]
@@ -15,6 +17,7 @@
 
 namespace hft::cli {
 int cmd_gen(const Args&);
+int cmd_sim(const Args&);
 int cmd_stats(const Args&);
 int cmd_replay(const Args&);
 int cmd_snapshot(const Args&);
@@ -24,6 +27,8 @@ static void usage() {
     std::fprintf(stderr,
                  "usage:\n"
                  "  itch gen      <out.itch> [--symbols 8] [--messages 2000000] [--seed 42]\n"
+                 "  itch sim      <out.itch> [--symbols 4] [--mm 3] [--noise 30] [--informed 2]\n"
+                 "                           [--hours 6.5] [--seed 7]\n"
                  "  itch stats    <file.itch>\n"
                  "  itch replay   <file.itch> [--book vector|map] [--symbol AAPL] [--depth 10]\n"
                  "                            [--latency] [--warm] [--check]\n"
@@ -39,6 +44,7 @@ int main(int argc, char** argv) {
     const hft::cli::Args args(argc, argv, 2);
     try {
         if (!std::strcmp(argv[1], "gen")) return hft::cli::cmd_gen(args);
+        if (!std::strcmp(argv[1], "sim")) return hft::cli::cmd_sim(args);
         if (!std::strcmp(argv[1], "stats")) return hft::cli::cmd_stats(args);
         if (!std::strcmp(argv[1], "replay")) return hft::cli::cmd_replay(args);
         if (!std::strcmp(argv[1], "snapshot")) return hft::cli::cmd_snapshot(args);

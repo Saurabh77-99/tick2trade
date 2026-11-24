@@ -55,13 +55,24 @@ async function load(path) {
 
 const { meta, snaps } = await load(file);
 
-// Chart point per snapshot: [t, mid, bid, ask] (prices as integers).
+// Chart point per snapshot: [t, mid, bid, ask] (prices as integers). When a
+// side of the book is empty (e.g. right at the open) there is no mid; carry
+// the previous one forward instead of plotting 0.
+let lastMid = 0;
 const points = snaps.map((s) => {
   const bid = s.bids.length ? s.bids[0][0] : 0;
   const ask = s.asks.length ? s.asks[0][0] : 0;
-  const mid = bid && ask ? (bid + ask) / 2 : bid || ask || s.last;
+  const mid = bid && ask ? (bid + ask) / 2 : lastMid || s.last || bid || ask;
+  if (mid) lastMid = mid;
   return [s.t, mid, bid, ask];
 });
+// Before the first real price there's nothing to plot: back-fill with the
+// first known mid so the chart's y-axis isn't stretched down to 0.
+const firstMid = points.find((p) => p[1])?.[1] ?? 0;
+for (const p of points) {
+  if (p[1]) break;
+  p[1] = firstMid;
+}
 
 function downsample(from, to, max) {
   const n = to - from;

@@ -66,6 +66,7 @@ public:
     }
 
     const Level* best() const noexcept { return levels_.empty() ? nullptr : &levels_.back(); }
+    Level* best() noexcept { return levels_.empty() ? nullptr : &levels_.back(); }
 
     template <typename F>
     void for_each(std::size_t n, F&& fn) const {
@@ -97,6 +98,7 @@ public:
     const Level* best() const noexcept {
         return levels_.empty() ? nullptr : &levels_.begin()->second;
     }
+    Level* best() noexcept { return levels_.empty() ? nullptr : &levels_.begin()->second; }
 
     template <typename F>
     void for_each(std::size_t n, F&& fn) const {

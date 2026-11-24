@@ -167,6 +167,10 @@ int cmd_snapshot(const Args& a) {
     const std::string out_path = a.str("out", symbol + ".jsonl");
     std::FILE* out = std::fopen(out_path.c_str(), "w");
     if (!out) throw std::runtime_error("cannot write " + out_path);
+    // 4 MB stdio buffer: each write() to a Windows drive from WSL is slow, so
+    // write rarely and in big chunks (the default 4 KB buffer took 25 s here).
+    static char iobuf[4 << 20];
+    std::setvbuf(out, iobuf, _IOFBF, sizeof iobuf);
     std::fprintf(out,
                  "{\"type\":\"meta\",\"symbol\":\"%s\",\"interval_ms\":%llu,\"depth\":%zu,\"from\":%llu,\"to\":%llu}\n",
                  symbol.c_str(), (unsigned long long)(interval / 1'000'000), depth, (unsigned long long)from,

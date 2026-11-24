@@ -132,7 +132,8 @@ h2 { margin: 0; font-size: 12px; font-weight: 600; text-transform: uppercase; le
 .asks .bar { background: var(--ask-bg); }
 .bids .bar { background: var(--bid-bg); }
 .row.best { background: var(--panel-2); }
-.row.empty span { visibility: hidden; }
+.row.empty { visibility: hidden; }
+.row.empty .bar { transition: none; }
 
 .row.up .size { animation: flash-up 450ms ease-out; }
 .row.down .size { animation: flash-down 450ms ease-out; }
