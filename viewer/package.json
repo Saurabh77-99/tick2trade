@@ -1,0 +1,16 @@
+{
+  "name": "hft-stack-viewer",
+  "version": "0.1.0",
+  "description": "Order book replay viewer for the HFT stack (Phase 1)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js ../data/AAPL.jsonl"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

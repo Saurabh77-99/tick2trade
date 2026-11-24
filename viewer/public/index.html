@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HFT Stack · Book Replay</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 0h16L0 16z' fill='%232fbf71'/%3E%3Cpath d='M16 0v16H0z' fill='%23ef5350'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="brand-name">HFT Stack</span>
+      <span class="brand-sub">book replay</span>
+    </div>
+    <div class="instrument">
+      <span id="symbol" class="symbol">—</span>
+      <span id="clock" class="clock">--:--:--.---</span>
+    </div>
+    <div class="controls">
+      <button id="back" class="icon" title="Step back (←)" aria-label="Step back">
+        <svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5" /></svg>
+      </button>
+      <button id="play" class="play" title="Play / pause (space)">Play</button>
+      <button id="fwd" class="icon" title="Step forward (→)" aria-label="Step forward">
+        <svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5" /></svg>
+      </button>
+      <div class="speeds" id="speeds" role="group" aria-label="Playback speed">
+        <button data-speed="1">1×</button>
+        <button data-speed="10">10×</button>
+        <button data-speed="60">60×</button>
+        <button data-speed="300">300×</button>
+        <button data-speed="1800">1800×</button>
+      </div>
+    </div>
+    <div id="conn" class="conn">connecting…</div>
+  </header>
+
+  <div class="timeline">
+    <span id="t-start" class="t-label">09:30</span>
+    <input id="seek" type="range" min="0" max="0" value="0" aria-label="Seek" />
+    <span id="t-end" class="t-label">16:00</span>
+  </div>
+
+  <main class="grid">
+    <section class="panel ladder">
+      <div class="panel-head">
+        <h2>Depth</h2>
+        <span class="hint" id="depth-hint">top 10 levels</span>
+      </div>
+      <div class="ladder-cols">
+        <span>Orders</span><span>Size</span><span>Price</span>
+      </div>
+      <div id="asks" class="side asks"></div>
+      <div id="spread" class="spread">
+        <span class="spread-label">spread</span>
+        <span id="spread-val">—</span>
+      </div>
+      <div id="bids" class="side bids"></div>
+    </section>
+
+    <section class="stack">
+      <div class="stats">
+        <div class="stat"><span class="k">Best bid</span><span id="s-bid" class="v bid">—</span><span id="s-bidsz" class="sub">—</span></div>
+        <div class="stat"><span class="k">Best ask</span><span id="s-ask" class="v ask">—</span><span id="s-asksz" class="sub">—</span></div>
+        <div class="stat"><span class="k">Spread</span><span id="s-spread" class="v">—</span><span id="s-bps" class="sub">—</span></div>
+        <div class="stat">
+          <span class="k">Imbalance <em>top 5</em></span>
+          <span id="s-imb" class="v">—</span>
+          <span class="imb"><span id="s-imb-bar"></span></span>
+        </div>
+        <div class="stat"><span class="k">Volume</span><span id="s-vol" class="v">—</span><span id="s-trades" class="sub">—</span></div>
+        <div class="stat"><span class="k">Book msgs</span><span id="s-rate" class="v">—</span><span class="sub">per second</span></div>
+      </div>
+
+      <div class="panel chart-panel">
+        <div class="panel-head">
+          <h2>Mid price</h2>
+          <span class="hint" id="last-px">—</span>
+        </div>
+        <div class="chart-wrap"><canvas id="chart"></canvas></div>
+      </div>
+
+      <div class="panel tape-panel">
+        <div class="panel-head">
+          <h2>Trades</h2>
+          <span class="hint">aggressor side</span>
+        </div>
+        <div class="tape-cols"><span>Time</span><span>Side</span><span>Price</span><span>Size</span></div>
+        <div id="tape" class="tape"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

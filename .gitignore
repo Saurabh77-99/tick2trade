@@ -1,0 +1,7 @@
+build*/
+data/
+viewer/node_modules/
+*.itch
+*.jsonl
+compile_commands.json
+.cache/
